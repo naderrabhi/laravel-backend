@@ -20,13 +20,13 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'firstName',
-        'lastName',
+        'nom',
+        'prenom',
         'email',
         'password',
         'role',
-        'disponible',
-        'accepted',
+        'isAvailable',
+        'isAccepted',
     ];
 
     /**
@@ -58,17 +58,17 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'disponible' => 'boolean',
-        'accepted' => 'boolean',
+        'isAvailable' => 'boolean',
+        'isAccepted' => 'boolean',
     ];
 
-    public function reportedPeripherals()
+    public function ordresDeTravail()
     {
-        return $this->hasMany(Peripheral::class, 'id_reporteduser');
+        return $this->hasMany(OrdresDeTravail::class, 'utilisateur_id');
     }
 
-    public function technicianAssignments()
+    public function affectationDesOrdres()
     {
-        return $this->hasMany(TechnicianAssignment::class, 'id_technician');
+        return $this->hasMany(AffectationDesOrdres::class, 'technicien_id');
     }
 }

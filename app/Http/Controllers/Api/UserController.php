@@ -24,7 +24,7 @@ class UserController extends Controller
         }else{
             return response()->json([
                 'status' => 404,
-                'message' =>'not found',
+                'message' =>"users n'est pas trouver",
             ],404) ;
 
         }
@@ -33,13 +33,13 @@ class UserController extends Controller
     public function store(Request $request)
     {    
         $validator = Validator::make($request->all(), [
-            'firstName'=> 'required|string|max:191',
-            'lastName'=> 'required|string|max:191',
+            'nom'=> 'required|string|max:191',
+            'prenom'=> 'required|string|max:191',
             'email' => 'required|email|unique:users',
             'password' => 'required|string|min:6',
             'role' => 'required|string',
-            'disponible' => 'boolean',
-            'accepted' => 'boolean',
+            'isAvailable' => 'boolean',
+            'isAccepted' => 'boolean',
         ]);
     
         if ($validator->fails()) {
@@ -49,19 +49,19 @@ class UserController extends Controller
             ], 422);
         } else {
             $user = User::create([
-                'firstName' => $request->firstName,
-                'lastName' => $request->lastName,
+                'nom' => $request->nom,
+                'prenom' => $request->prenom,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'role' => $request->role,
-                'disponible' => $request->disponible,
-                'accepted' => $request->accepted,
+                'isAvailable' => $request->isAvailable,
+                'isAccepted' => $request->isAccepted,
             ]);
     
             if ($user) {
                 return response()->json([
                     'status' => 200,
-                    'message' => "User créé avec succès"
+                    'message' => "user créé avec succès"
                 ], 200);
             } else {
                 return response()->json([
@@ -83,7 +83,7 @@ class UserController extends Controller
                     }else{
                         return response()->json([
                             'status'=>404,
-                            'message'=>"n'est pas trouver"
+                            'message'=>"user n'est pas trouver"
                         ],404);
                     }
                    }
@@ -99,7 +99,7 @@ class UserController extends Controller
                     }else{
                         return response()->json([
                             'status'=>404,
-                            'message'=>"n'est pas trouver"
+                            'message'=>"user n'est pas trouver"
                         ],404);
                     }
 
@@ -109,13 +109,13 @@ class UserController extends Controller
                 public function update(Request $request, int $id)
                 {
                     $validator = Validator::make($request->all(), [
-                        'firstName' => 'required|string|max:191',
-                        'lastName' => 'required|string|max:191',
+                        'nom' => 'required|string|max:191',
+                        'prenom' => 'required|string|max:191',
                         'email' => 'required|email',
                         'password' => 'nullable|string|min:6',
                         'role' => 'required|string',
-                        'disponible' => 'boolean',
-                        'accepted' => 'boolean',
+                        'isAvailable' => 'boolean',
+                        'isAccepted' => 'boolean',
                     ]);
                 
                     if ($validator->fails()) {
@@ -130,7 +130,7 @@ class UserController extends Controller
                     if (!$userToUpdate) {
                         return response()->json([
                             'status' => 404,
-                            'message' => "User not found with ID: $id",
+                            'message' => "user n'est pas trouver avec ID: $id",
                         ], 404);
                     }
                 
@@ -138,17 +138,17 @@ class UserController extends Controller
                 
                     if ($newEmail === $userToUpdate->email) {
                         $userToUpdate->update($request->only([
-                            'firstName',
-                            'lastName',
+                            'nom',
+                            'prenom',
                             'password',
                             'role',
-                            'disponible',
-                            'accepted',
+                            'isAvailable',
+                            'isAccepted',
                         ]));
                 
                         return response()->json([
                             'status' => 200,
-                            'message' => "User updated successfully",
+                            'message' => "user modifiée avec succés",
                         ], 200);
                     } else {
                         $existingUser = User::where('email', $newEmail)->first();
@@ -156,14 +156,14 @@ class UserController extends Controller
                         if ($existingUser) {
                             return response()->json([
                                 'status' => 422,
-                                'errors' => ['email' => ['The email has already been taken.']],
+                                'errors' => ['email' => ['email est déja existe']],
                             ], 422);
                         } else {
                             $userToUpdate->update(array_merge($request->all(), ['email' => $newEmail]));
                 
                             return response()->json([
                                 'status' => 200,
-                                'message' => "User updated successfully (email changed)",
+                                'message' => "user modifiée avec succés (email changé)",
                             ], 200);
                         }
                     }
@@ -206,7 +206,7 @@ class UserController extends Controller
             } else {
                 return response()->json([
                     'status' => 'error',
-                    'message' => 'User not found'
+                    'message' => "user n'est pas trouvée"
                 ], 404);
             }
         }

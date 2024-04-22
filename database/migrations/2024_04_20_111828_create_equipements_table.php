@@ -11,17 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('equipements', function (Blueprint $table) {
             $table->id();
             $table->string('nom');
-            $table->string('prenom');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->string('role');
-            $table->boolean('isAvailable');
-            $table->boolean('isAccepted');
-            $table->rememberToken();
+            $table->text('description')->nullable();
+            $table->string('numero_serie', 255)->unique();
+            $table->string('modele', 255);
+            $table->string('marque', 255);
+            $table->string('coleur', 255);
+            $table->unsignedBigInteger('emplacement_id');
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('equipements');
     }
 };

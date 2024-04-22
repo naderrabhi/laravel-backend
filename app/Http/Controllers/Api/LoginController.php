@@ -50,7 +50,7 @@ class LoginController extends Controller
             $user = Auth::user();
 
             // Check if the user is accepted
-            if ($user->accepted) {
+            if ($user->isAccepted) {
                 // If the user is accepted, generate a token and proceed with login
                 $token = $user->createToken('auth_token')->plainTextToken;
                 $user->remember_token = $token;
@@ -58,7 +58,7 @@ class LoginController extends Controller
 
                 return response()->json([
                     'status' => 200,
-                    'message' => 'Login successful',
+                    'message' => 'Login avec succès',
                     'token' => $token,
                     'user' => $user,
                 ]);
@@ -66,14 +66,14 @@ class LoginController extends Controller
                 // If the user is not accepted, return an error response
                 return response()->json([
                     'status' => 401,
-                    'message' => 'User not accepted'
+                    'message' => "User n'est pas accepté"
                 ], 401);
             }
         } else {
             // If authentication fails, return an error response
             return response()->json([
                 'status' => 401,
-                'message' => 'Invalid credentials'
+                'message' => "Informations d'identification non valides"
             ], 401);
         }
     }
