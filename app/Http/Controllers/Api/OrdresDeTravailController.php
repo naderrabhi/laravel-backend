@@ -61,7 +61,7 @@ class OrdresDeTravailController extends Controller
         $validator = Validator::make($request->all(), [
             'titre' => 'required|string',
             'description' => 'required|string',
-            'priorite' => 'required|string', // (exp: Faible, Moyenne, Haute)
+            'priorite' => 'string', // (exp: Faible, Moyenne, Haute)
             'statut' => 'required|string', // (exp: En panne, En attente, En cours, Réparé)
             'utilisateur_id' => 'required|string',
             'equipement_id' => 'required|string',
@@ -219,7 +219,7 @@ class OrdresDeTravailController extends Controller
         $validator = Validator::make($request->all(), [
             'titre' => 'required|string',
             'description' => 'required|string',
-            'priorite' => 'required|string', // (exp: Faible, Moyenne, Haute)
+            'priorite' => 'string', // (exp: Faible, Moyenne, Haute)
             'statut' => 'required|string', // (exp: Normale, En panne, En attente, En cours, Réparé)
             'utilisateur_id' => 'required|string',
             'equipement_id' => 'required|string',
