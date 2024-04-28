@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('titre');
             $table->string('description');
-            $table->enum('priorite', ['Faible', 'Moyenne', 'Haute'])->nullable();; // Define priority levels
+            $table->boolean('urgent')->nullable();;
             $table->enum('statut', ['En panne', 'En attente', 'En cours', 'Réparé']); // Define work order statuses
             $table->string('utilisateur_id');
             $table->string('equipement_id');

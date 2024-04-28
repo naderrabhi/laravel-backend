@@ -22,7 +22,7 @@ class OrdresDeTravailController extends Controller
                 'id' => $ordreDeTravail->id,
                 'titre' => $ordreDeTravail->titre,
                 'description' => $ordreDeTravail->description,
-                'priorite' => $ordreDeTravail->priorite,
+                'urgent' => $ordreDeTravail->urgent,
                 'statut' => $ordreDeTravail->statut,
                 'utilisateur_id' => $ordreDeTravail->utilisateur_id,
                 'equipement_id' => $ordreDeTravail->equipement_id,
@@ -61,7 +61,6 @@ class OrdresDeTravailController extends Controller
         $validator = Validator::make($request->all(), [
             'titre' => 'required|string',
             'description' => 'required|string',
-            'priorite' => 'string', // (exp: Faible, Moyenne, Haute)
             'statut' => 'required|string', // (exp: En panne, En attente, En cours, Réparé)
             'utilisateur_id' => 'required|string',
             'equipement_id' => 'required|string',
@@ -74,7 +73,7 @@ class OrdresDeTravailController extends Controller
         $ordresDeTravail = OrdresDeTravail::create([
             'titre' =>$request->titre,
             'description' =>$request->description,
-            'priorite' =>$request->priorite,
+            'urgent' =>$request->urgent,
             'statut' =>$request->statut,
             'utilisateur_id' =>$request->utilisateur_id,
             'equipement_id' =>$request->equipement_id,
@@ -109,7 +108,7 @@ class OrdresDeTravailController extends Controller
             'id' => $ordreDeTravail->id,
             'titre' => $ordreDeTravail->titre,
             'description' => $ordreDeTravail->description,
-            'priorite' => $ordreDeTravail->priorite,
+            'urgent' => $ordreDeTravail->urgent,
             'statut' => $ordreDeTravail->statut,
             'utilisateur_id' => $ordreDeTravail->utilisateur_id,
             'equipement_id' => $ordreDeTravail->equipement_id,
@@ -161,7 +160,7 @@ class OrdresDeTravailController extends Controller
             'id' => $ordreDeTravail->id,
             'titre' => $ordreDeTravail->titre,
             'description' => $ordreDeTravail->description,
-            'priorite' => $ordreDeTravail->priorite,
+            'urgent' => $ordreDeTravail->urgent,
             'statut' => $ordreDeTravail->statut,
             'utilisateur_id' => $ordreDeTravail->utilisateur_id,
             'equipement_id' => $ordreDeTravail->equipement_id,
@@ -219,7 +218,6 @@ class OrdresDeTravailController extends Controller
         $validator = Validator::make($request->all(), [
             'titre' => 'required|string',
             'description' => 'required|string',
-            'priorite' => 'string', // (exp: Faible, Moyenne, Haute)
             'statut' => 'required|string', // (exp: Normale, En panne, En attente, En cours, Réparé)
             'utilisateur_id' => 'required|string',
             'equipement_id' => 'required|string',

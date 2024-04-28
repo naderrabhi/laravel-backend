@@ -170,4 +170,86 @@ class EquipementsController extends Controller
 
         return response()->json(['message' => 'Equipement supprimer avec succés']);
     }
+
+    public function getAllEquipementsWithEmplacement(Request $request)
+    {
+        $idEmplacement = $request->route('id');
+
+        $equipements = Equipements::where('emplacement_id', $idEmplacement)->get();
+
+        $responseData = [];
+
+        foreach ($equipements as $equipement) {
+            $data = [
+                'id' => $equipement->id,
+                'nom' => $equipement->nom,
+                'description' => $equipement->description,
+                'numero_serie' => $equipement->numero_serie,
+                'modele' => $equipement->modele,
+                'marque' => $equipement->marque,
+                'coleur' => $equipement->coleur,
+            ];
+
+            if ($equipement->emplacement) {
+                $data['emplacement'] = [
+                    'id' => $equipement->emplacement->id,
+                    'nom' => $equipement->emplacement->nom,
+                    'description' => $equipement->emplacement->description,
+                ];
+            }
+
+            $responseData[] = $data;
+        }
+      
+        if ($responseData) {
+          return response()->json([
+            'data' => $responseData,  // Return only the equipment ID
+          ], 200);
+        } else {
+          return response()->json([
+            'message' => 'Aucun équipement trouvé',  // Inform if no equipment found
+          ], 404);
+        }
+
+        // $equipementsWithEmplacements = Equipements::with('emplacement');
+
+        // if ($idEmplacement) {
+        //     $equipementsWithEmplacements = $equipementsWithEmplacements->whereHas('emplacement', function ($query) use ($idEmplacement) {
+        //     $query->where('id', $idEmplacement);
+        //     });
+        // }
+
+        // $equipementsWithEmplacements = $equipementsWithEmplacements->get();
+
+        // $responseData = [];
+
+        // foreach ($equipementsWithEmplacements as $equipement) {
+        //     $data = [
+        //     'id' => $equipement->id,
+        //     'nom' => $equipement->nom,
+        //     'description' => $equipement->description,
+        //     'numero_serie' => $equipement->numero_serie,
+        //     'modele' => $equipement->modele,
+        //     'marque' => $equipement->marque,
+        //     'coleur' => $equipement->coleur,
+        //     ];
+
+        //     if ($equipement->emplacement) {
+        //     $data['emplacement'] = [
+        //         'id' => $equipement->emplacement->id,
+        //         'nom' => $equipement->emplacement->nom,
+        //         'description' => $equipement->emplacement->description,
+        //     ];
+        //     }
+
+        //     $responseData[] = $data;
+        // }
+
+        // return response()->json([
+        //     'status' => 200,
+        //     'message' => 'Equipements trouvés',
+        //     'data' => $responseData,
+        // ], 200);
+    }
+
 }

@@ -16,8 +16,17 @@ class OrdresDeTravail extends Model
         'equipement_id',
         'titre',
         'description',
-        'priorite',
+        'urgent',
         'statut',
+    ];
+
+     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'urgent' => 'boolean',
     ];
 
     public function user()
