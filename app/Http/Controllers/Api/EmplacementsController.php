@@ -48,7 +48,7 @@ class EmplacementsController extends Controller
                 if ($emplacement) {
                     return response()->json([
                         'status' => 200,
-                        'message' => "emplacement créé avec succès"
+                        'message' => "Emplacement créé avec succès"
                     ], 200);
                 } else {
                     return response()->json([
@@ -69,7 +69,7 @@ class EmplacementsController extends Controller
             }else{
                 return response()->json([
                     'status'=>404,
-                    'message'=>"emplacement n'est pas trouver"
+                    'message'=>"Emplacement n'est pas trouver"
                 ],404);
             }
         }
@@ -102,11 +102,14 @@ class EmplacementsController extends Controller
             $emplacement = Emplacements::find($id);
     
             if (!$emplacement) {
-                return response()->json(['message' => "emplacement n'est trouvé"], 404);
+                return response()->json(['message' => "Emplacement n'est trouvé"], 404);
             }
     
             $emplacement->update($request->all());
-            return response()->json($emplacement);
+            return response()->json([
+                'status' => 200,
+                'message' => "Emplacement modifiée avec succés",
+            ], 200);
         }   
         public function destroy($id)
         {
@@ -116,7 +119,7 @@ class EmplacementsController extends Controller
              $emplacement->delete();
              return response()->json([
                 'status'=>200,
-                'message'=> "emplacement supprimer avec succés"
+                'message'=> "Emplacement supprimer avec succés"
             ],200);
             }else{
                 return response()->json([

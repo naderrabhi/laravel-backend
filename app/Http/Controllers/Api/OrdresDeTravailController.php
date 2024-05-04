@@ -234,7 +234,10 @@ class OrdresDeTravailController extends Controller
         }
 
         $ordreDeTravail->update($request->all());
-        return response()->json($ordreDeTravail);
+        return response()->json([
+            'status' => 200,
+            'message' => "Ordre de travail modifiée avec succés",
+        ], 200);
     }
 
     public function destroy($id)

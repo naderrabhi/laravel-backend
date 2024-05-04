@@ -156,7 +156,11 @@ class EquipementsController extends Controller
         }
 
         $equipement->update($request->all());
-        return response()->json($equipement);
+
+        return response()->json([
+            'status' => 200,
+            'message' => "Equipement modifiée avec succés",
+        ], 200);
     }
     public function destroy($id)
     {

@@ -181,7 +181,10 @@ class AffectationDesOrdresController extends Controller
         }
 
         $affectationDeOrdre->update($request->all());
-        return response()->json($affectationDeOrdre);
+        return response()->json([
+            'status' => 200,
+            'message' => "Affectation de ordre modifiée avec succés",
+        ], 200);
     }
 
     public function destroy($id)

@@ -24,7 +24,7 @@ class UserController extends Controller
         }else{
             return response()->json([
                 'status' => 404,
-                'message' =>"users n'est pas trouver",
+                'message' =>"Users n'est pas trouver",
             ],404) ;
 
         }
@@ -61,7 +61,7 @@ class UserController extends Controller
             if ($user) {
                 return response()->json([
                     'status' => 200,
-                    'message' => "user créé avec succès"
+                    'message' => "User créé avec succès"
                 ], 200);
             } else {
                 return response()->json([
@@ -83,7 +83,7 @@ class UserController extends Controller
                     }else{
                         return response()->json([
                             'status'=>404,
-                            'message'=>"user n'est pas trouver"
+                            'message'=>"User n'est pas trouver"
                         ],404);
                     }
                    }
@@ -99,7 +99,7 @@ class UserController extends Controller
                     }else{
                         return response()->json([
                             'status'=>404,
-                            'message'=>"user n'est pas trouver"
+                            'message'=>"User n'est pas trouver"
                         ],404);
                     }
 
@@ -130,7 +130,7 @@ class UserController extends Controller
                     if (!$userToUpdate) {
                         return response()->json([
                             'status' => 404,
-                            'message' => "user n'est pas trouver avec ID: $id",
+                            'message' => "User n'est pas trouver avec ID: $id",
                         ], 404);
                     }
                 
@@ -148,7 +148,7 @@ class UserController extends Controller
                 
                         return response()->json([
                             'status' => 200,
-                            'message' => "user modifiée avec succés",
+                            'message' => "User modifiée avec succés",
                         ], 200);
                     } else {
                         $existingUser = User::where('email', $newEmail)->first();
@@ -156,14 +156,14 @@ class UserController extends Controller
                         if ($existingUser) {
                             return response()->json([
                                 'status' => 422,
-                                'errors' => ['email' => ['email est déja existe']],
+                                'errors' => ['email' => ['Email est déja existe']],
                             ], 422);
                         } else {
                             $userToUpdate->update(array_merge($request->all(), ['email' => $newEmail]));
                 
                             return response()->json([
                                 'status' => 200,
-                                'message' => "user modifiée avec succés (email changé)",
+                                'message' => "User modifiée avec succés (email changé)",
                             ], 200);
                         }
                     }
@@ -177,7 +177,7 @@ class UserController extends Controller
              $user->delete();
              return response()->json([
                 'status'=>200,
-                'message'=> "user supprimer avec succés"
+                'message'=> "User supprimer avec succés"
             ],200);
             }else{
                 return response()->json([
@@ -206,7 +206,7 @@ class UserController extends Controller
             } else {
                 return response()->json([
                     'status' => 'error',
-                    'message' => "user n'est pas trouvée"
+                    'message' => "User n'est pas trouvée"
                 ], 404);
             }
         }
