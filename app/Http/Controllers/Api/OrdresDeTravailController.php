@@ -56,42 +56,118 @@ class OrdresDeTravailController extends Controller
         ], 200);
     }
     
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'titre' => 'required|string',
-            'description' => 'required|string',
-            'statut' => 'required|string', // (exp: En panne, En attente, En cours, Réparé)
-            'utilisateur_id' => 'required|string',
-            'equipement_id' => 'required|string',
-        ]);
+    // public function store(Request $request)
+    // {
+    //     $validator = Validator::make($request->all(), [
+    //         'titre' => 'required|string',
+    //         'description' => 'required|string',
+    //         'statut' => 'required|string', // (exp: En panne, En attente, En cours, Réparé)
+    //         'utilisateur_id' => 'required|string',
+    //         'equipement_id' => 'required|string',
+    //     ]);
 
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
+    //     if ($validator->fails()) {
+    //         return response()->json($validator->errors(), 422);
+    //     }
 
-        $ordresDeTravail = OrdresDeTravail::create([
-            'titre' =>$request->titre,
-            'description' =>$request->description,
-            'urgent' =>$request->urgent,
-            'statut' =>$request->statut,
-            'utilisateur_id' =>$request->utilisateur_id,
-            'equipement_id' =>$request->equipement_id,
-        ]);
+    //     $ordresDeTravail = OrdresDeTravail::create([
+    //         'titre' =>$request->titre,
+    //         'description' =>$request->description,
+    //         'urgent' =>$request->urgent,
+    //         'statut' =>$request->statut,
+    //         'utilisateur_id' =>$request->utilisateur_id,
+    //         'equipement_id' =>$request->equipement_id,
+    //     ]);
         
-        if($ordresDeTravail){
-            return response()->json([
-                'status'=>200,
-                'message'=> "Ordres de travail créer avec succés"
-            ],200);
-        }else{
-            return response()->json([
-                'status'=>500,
-                'message'=> "something went wrong"
-            ],500);
+    //     if($ordresDeTravail){
+    //         return response()->json([
+    //             'status'=>200,
+    //             'message'=> "Ordres de travail créer avec succés"
+    //         ],200);
+    //     }else{
+    //         return response()->json([
+    //             'status'=>500,
+    //             'message'=> "something went wrong"
+    //         ],500);
 
+    //     }
+    // }
+
+    public function store(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'titre' => 'required|string',
+        'description' => 'required|string',
+        'statut' => 'required|string', // (exp: En panne, En attente, En cours, Réparé)
+        'utilisateur_id' => 'required|string',
+        'equipement_id' => 'required|string',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json($validator->errors(), 422);
+    }
+
+    // Check if equipment with the provided ID exists
+    $existingOrdre = OrdresDeTravail::where('equipement_id', $request->equipement_id)->exists();
+
+    if (!$existingOrdre) {
+        // Create a new order if equipment doesn't exist
+        $ordresDeTravail = OrdresDeTravail::create([
+            'titre' => $request->titre,
+            'description' => $request->description,
+            'urgent' => $request->urgent,
+            'statut' => $request->statut,
+            'utilisateur_id' => $request->utilisateur_id,
+            'equipement_id' => $request->equipement_id,
+        ]);
+
+        if ($ordresDeTravail) {
+            return response()->json([
+                'status' => 200,
+                'message' => "Ordres de travail créé avec succès",
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 500,
+                'message' => "Une erreur est survenue lors de la création de l'ordre de travail",
+            ], 500);
+        }
+    } else {
+        // Check if existing order with that equipment has status other than "Réparé"
+        $existingActiveOrdre = OrdresDeTravail::where('equipement_id', $request->equipement_id)
+            ->where('statut', '!=', 'Réparé')
+            ->exists();
+
+        if ($existingActiveOrdre) {
+            return response()->json([
+                'status' => 422,
+                'message' => "Un ordre de travail est déjà en cours pour cet équipement",
+            ], 422);
+        } else {
+            // Create a new order if existing equipment has "Réparé" status
+            $ordresDeTravail = OrdresDeTravail::create([
+                'titre' => $request->titre,
+                'description' => $request->description,
+                'urgent' => $request->urgent,
+                'statut' => $request->statut,
+                'utilisateur_id' => $request->utilisateur_id,
+                'equipement_id' => $request->equipement_id,
+            ]);
+
+            if ($ordresDeTravail) {
+                return response()->json([
+                    'status' => 200,
+                    'message' => "Ordres de travail créé avec succès",
+                ], 200);
+            } else {
+                return response()->json([
+                    'status' => 500,
+                    'message' => "Une erreur est survenue lors de la création de l'ordre de travail",
+                ], 500);
+            }
         }
     }
+}
 
     public function show($id)
     {

@@ -21,6 +21,16 @@ class AffectationDesOrdresController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
+        // Check for existing assignment
+        $existingAssignment = AffectationDesOrdres::where('ordre_travail_id', $request->ordre_travail_id)->exists();
+
+        if ($existingAssignment) {
+            return response()->json([
+                'status' => 422,
+                'message' => "Cet ordre de travail est déjà affecté à un technicien",
+            ], 422);
+        }
+
         $affectationDeOrdre = AffectationDesOrdres::create([
             'ordre_travail_id' =>$request->ordre_travail_id,
             'technicien_id' =>$request->technicien_id,
